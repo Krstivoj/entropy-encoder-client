@@ -46,7 +46,7 @@ export default function Encodings() {
     const classes = useStyles();
     const [currentPage,setCurrentPage] = useState(1);
     const [data,setData] = useState(null);
-    const [isLoading,setLoading] = useState(false);
+    const [isLoading,setLoading] = useState(true);
 
     const handlePageChange = (page) =>{
         setCurrentPage(page);
