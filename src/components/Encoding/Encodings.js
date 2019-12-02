@@ -1,12 +1,14 @@
-// TODO make unpack response and populate array of EncodingDetails :)
+import React, {useEffect, useState}     from 'react';
+import Pagination                       from 'rc-pagination';
 
-import React, {useEffect, useState} from 'react';
-import Pagination from 'rc-pagination';
+import {makeStyles}                     from "@material-ui/core";
+import CircularProgress                 from "@material-ui/core/CircularProgress";
+
+import EncodingDetails                  from "./EncodingDetails";
+import {NoData}                         from "../NoData/NoData";
+import instance                         from "../../config/axiosConf";
+
 import 'rc-pagination/assets/index.css';
-import EncodingDetails from "./EncodingDetails";
-import {makeStyles} from "@material-ui/core";
-import instance from "../../config/axiosConf";
-
 
 const useStyles = makeStyles(theme => ({
     '@global': {
@@ -36,11 +38,15 @@ const useStyles = makeStyles(theme => ({
     }
 }));
 
-export default function Encodings(){
+/**
+ * @return {null}
+ */
+export default function Encodings() {
 
     const classes = useStyles();
     const [currentPage,setCurrentPage] = useState(1);
     const [data,setData] = useState(null);
+    const [isLoading,setLoading] = useState(false);
 
     const handlePageChange = (page) =>{
         setCurrentPage(page);
@@ -51,30 +57,36 @@ export default function Encodings(){
             page : currentPage-1,
             size : 10
         };
+        setLoading(true);
         instance.get('/api/encoder/encoding/all',{params : params}).then(response => {
-            setData(response.data);
+            if(response && response.data) {
+                setData(response.data);
+            }
+            setTimeout(() => setLoading(false),1000);
         });
     },[currentPage]);
 
     return(
-        <div className={classes.container}>
+        !isLoading ? <div className={classes.container}>
             <div>
                 {
-                    data && data.content.map((item,index) => {
+                    data && data.content && data.content.length ? data.content.map((item,index) => {
                         const key = `encoding-details-${index}`;
                         return <EncodingDetails {...item} key={key}/>
-                    })
+                    }) :
+                        <NoData/>
+
                 }
             </div>
             {
-                data &&
+                data && data.content && data.content.length ?
                 <Pagination
                     current={currentPage}
                     onChange={handlePageChange}
                     total={data.totalPages * 10}
                     style={{display: 'flex', justifyContent: 'center'}}
-                />
+                /> : null
             }
-        </div>
+        </div> : <CircularProgress style={{width:'100px', height: '100px', position: 'absolute', top: '300px'}} disableShrink/>
     );
 }

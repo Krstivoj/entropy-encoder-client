@@ -1,15 +1,19 @@
-import React from 'react';
-import Avatar from '@material-ui/core/Avatar';
-import Button from '@material-ui/core/Button';
-import CssBaseline from '@material-ui/core/CssBaseline';
-import TextField from '@material-ui/core/TextField';
-import Link from '@material-ui/core/Link';
-import Grid from '@material-ui/core/Grid';
-import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
-import Typography from '@material-ui/core/Typography';
-import { makeStyles } from '@material-ui/core/styles';
-import Container from '@material-ui/core/Container';
-import instance from "../../config/axiosConf";
+import React, {useState}  from 'react';
+
+import Avatar             from '@material-ui/core/Avatar';
+import Button             from '@material-ui/core/Button';
+import CssBaseline        from '@material-ui/core/CssBaseline';
+import TextField          from '@material-ui/core/TextField';
+import Link               from '@material-ui/core/Link';
+import Grid               from '@material-ui/core/Grid';
+import LockOutlinedIcon   from '@material-ui/icons/LockOutlined';
+import Typography         from '@material-ui/core/Typography';
+import { makeStyles }     from '@material-ui/core/styles';
+import Container          from '@material-ui/core/Container';
+import Snackbar           from "@material-ui/core/Snackbar";
+
+import Notification       from "../Notifications/Notifications";
+import instance           from "../../config/axiosConf";
 
 const useStyles = makeStyles(theme => ({
     '@global': {
@@ -37,9 +41,13 @@ const useStyles = makeStyles(theme => ({
     },
 }));
 
-export default function SignUp() {
+export default function SignUp(props) {
 
     const classes = useStyles();
+
+    const [isNotificationOpen,setNotificationOpen] = useState(false);
+    const [messageType,setMessageType] = useState('warning');
+    const [message,setMessage] = useState(null);
 
     const handleSubmit = (event) => {
         event.preventDefault();
@@ -52,12 +60,41 @@ export default function SignUp() {
         }
 
         instance.post('/api/auth/signup',payload).then(response => {
-            console.log(response.data);
+            const data = response.data ;
+            const { success, message} = data ;
+            setNotificationOpen(true);
+            if (success) {
+                setMessage(message);
+                setTimeout( () => props.history.push('/login'),2000);
+            } else {
+                setMessageType('error');
+                setMessage(message);
+            }
         });
+    };
+
+
+    const closeNotification = () => {
+        setNotificationOpen(false);
     };
 
     return (
         <Container component="main" maxWidth="xs">
+            <Snackbar
+                anchorOrigin={{
+                    vertical: 'bottom',
+                    horizontal: 'left',
+                }}
+                open={isNotificationOpen}
+                autoHideDuration={2000}
+                onClose={closeNotification}
+            >
+                <Notification
+                    variant={messageType}
+                    message={message}
+                    onClose={closeNotification}
+                />
+            </Snackbar>
             <CssBaseline />
             <div className={classes.paper}>
                 <Avatar className={classes.avatar}>
@@ -77,6 +114,7 @@ export default function SignUp() {
                                 label="Name"
                                 name="name"
                                 autoComplete="off"
+                                inputProps={{minLength: 4}}
                             />
                         </Grid>
                         <Grid item xs={12}>

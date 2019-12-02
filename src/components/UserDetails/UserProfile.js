@@ -81,6 +81,7 @@ export default function UserProfile(props) {
             setNotificationOpen(true);
         });
     };
+
     useEffect(() => {
         const abortController = new AbortController();
         instance.get('api/auth/profile').then(response => {
@@ -95,6 +96,7 @@ export default function UserProfile(props) {
     const closeNotification = () => {
         setNotificationOpen(false);
     };
+
     return userProfile.username ? (
         <>
             <Snackbar

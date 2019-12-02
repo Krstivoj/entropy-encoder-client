@@ -1,11 +1,14 @@
-import {useRef, useState} from "react";
-import React              from "react";
-import {makeStyles}       from "@material-ui/core";
-import Notification       from "../Notifications/Notifications";
-import TextField          from "@material-ui/core/TextField";
-import Button             from "@material-ui/core/Button";
-import Snackbar           from "@material-ui/core/Snackbar";
-import PropTypes          from "prop-types";
+import {useEffect, useRef, useState} from "react";
+import React                         from "react";
+import PropTypes                     from "prop-types";
+
+import {makeStyles}                  from "@material-ui/core";
+import TextField                     from "@material-ui/core/TextField";
+import Button                        from "@material-ui/core/Button";
+import Snackbar                      from "@material-ui/core/Snackbar";
+
+import Notification                  from "../Notifications/Notifications";
+import EventEmitter                  from "../EventEmitter/EventEmiter";
 
 const useStyles = makeStyles(theme => ({
     container: {
@@ -25,12 +28,28 @@ const useStyles = makeStyles(theme => ({
 
 export default function InputForm(props) {
 
-    const {pairs,addPair}  = props;
+    const {pairs}  = props;
     const classes = useStyles();
     const [isNotificationOpen,setNotificationOpen] = useState(false);
     const [message,setMessage] = useState(null);
     const symbolRef = useRef(null);
     const probabilityRef = useRef(null);
+    const [editablePair, setEditablePair] = useState(null);
+
+    useEffect( () => {
+        if( editablePair ) {
+            symbolRef.current.firstChild.control.value = editablePair.symbol;
+            probabilityRef.current.firstChild.control.value = editablePair.probability;
+        }
+    },[editablePair]);
+
+    const handlePairForEdit = (pairForEdit) => {
+        setEditablePair(pairForEdit);
+    };
+
+    useEffect(() => {
+        EventEmitter.subscribe('editPair', pairForEdit => handlePairForEdit(pairForEdit))
+    },[]);
 
     const handleSubmit = event => {
 
@@ -46,10 +65,11 @@ export default function InputForm(props) {
             setNotificationOpen(true);
             return;
         }
-        if(!pairs.some(pair => pair.symbol === newPair.symbol) && parseFloat(newPair.probability) <= 1.0 ) {
-                addPair(newPair);
+        if ( (!pairs.some(pair => pair.symbol === newPair.symbol) && parseFloat(newPair.probability) <= 1.0) || editablePair ) {
+                EventEmitter.dispatch('addPair',newPair);
                 event.target.reset();
-        }else {
+                setEditablePair(null);
+        } else {
             setMessage('Symbol already exists!');
             setNotificationOpen(true);
         }
@@ -112,7 +132,7 @@ export default function InputForm(props) {
                     ref={probabilityRef}
                 />
                 <Button variant="contained" color="primary" className={classes.button} type={'submit'}>
-                    Add
+                    { editablePair ? "Update" : "Add"}
                 </Button>
             </form>
         </>
@@ -120,6 +140,5 @@ export default function InputForm(props) {
 }
 InputForm.propTypes = {
     className: PropTypes.string,
-    addPair: PropTypes.func.isRequired,
     pairs: PropTypes.array
 };

@@ -23,13 +23,13 @@ import {Avatar}                 from '@material-ui/core';
 import LockOutlinedIcon         from '@material-ui/icons/LockOutlined';
 import Link                     from '@material-ui/core/Link';
 import SvgIcon                  from '@material-ui/core/SvgIcon';
+import Tooltip                  from '@material-ui/core/Tooltip';
 
 import UserProfile              from '../UserDetails/UserProfile';
 import {ListIcon}               from '../../config/costants';
 import CodeTable                from '../CodeTable/CodeTable';
 import Encodings                from '../Encoding/Encodings';
-import Tooltip                  from '@material-ui/core/Tooltip';
-import Login from "../Login/Login";
+import Login                    from "../Login/Login";
 
 const drawerWidth = 240;
 
@@ -149,7 +149,7 @@ export default function Content(props) {
                 })}
             >
                 <Toolbar>
-                    <Tooltip title='Show sidebar' placement='top' interactive>
+                    <Tooltip title='Show menu' placement='top' interactive>
                         <IconButton
                             color='inherit'
                             aria-label='Open drawer'

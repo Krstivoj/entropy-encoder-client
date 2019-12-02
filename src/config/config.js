@@ -1,4 +1,4 @@
-import localConfig from './config.local.json';
+import localConfig   from './config.local.json';
 import stagingConfig from './config.staging.json';
 
 export function config() {
