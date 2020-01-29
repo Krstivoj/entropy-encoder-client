@@ -1,21 +1,21 @@
-import React, { useState} from 'react';
-import Avatar             from '@material-ui/core/Avatar';
-import Button             from '@material-ui/core/Button';
-import CssBaseline        from '@material-ui/core/CssBaseline';
-import TextField          from '@material-ui/core/TextField';
-import FormControlLabel   from '@material-ui/core/FormControlLabel';
-import Checkbox           from '@material-ui/core/Checkbox';
-import Link               from '@material-ui/core/Link';
-import Grid               from '@material-ui/core/Grid';
-import Typography         from '@material-ui/core/Typography';
-import { makeStyles }     from '@material-ui/core/styles';
-import Container          from '@material-ui/core/Container';
-import LockOutlinedIcon   from '@material-ui/icons/LockOutlined';
-import Snackbar           from "@material-ui/core/Snackbar";
+import React, { useState}     from 'react';
+import Avatar                 from '@material-ui/core/Avatar';
+import Button                 from '@material-ui/core/Button';
+import CssBaseline            from '@material-ui/core/CssBaseline';
+import TextField              from '@material-ui/core/TextField';
+import FormControlLabel       from '@material-ui/core/FormControlLabel';
+import Checkbox               from '@material-ui/core/Checkbox';
+import Link                   from '@material-ui/core/Link';
+import Grid                   from '@material-ui/core/Grid';
+import Typography             from '@material-ui/core/Typography';
+import { makeStyles }         from '@material-ui/core/styles';
+import Container              from '@material-ui/core/Container';
+import LockOutlinedIcon       from '@material-ui/icons/LockOutlined';
+import Snackbar               from "@material-ui/core/Snackbar";
 
-import Notification       from '../Notifications/Notifications';
-import axios              from 'axios';
-import instance           from '../../config/axiosConf';
+import Notification           from '../Notifications/Notifications';
+import {login}                from "../../services/AuthService";
+import {constructAuthPayload} from "../../config/utils";
 
 const useStyles = makeStyles(theme => ({
     '@global': {
@@ -53,31 +53,21 @@ export default function SignIn(props) {
     const [messageType,setMessageType] = useState('warning');
     const [message,setMessage] = useState(null);
 
-    const handleSubmit = (event) => {
+    const handleSubmit = async (event) => {
 
         event.preventDefault();
         event.persist();
-        let payload = {} ;
-        for(let i = 0 ; i < event.target.elements.length ; i ++ ) {
-            if(event.target.elements[i].name){
-                payload[event.target.elements[i].name] = event.target.elements[i].value ;
-            }
-        }
-        const CancelToken = axios.CancelToken;
-        const source = CancelToken.source();
-        instance.post('/api/auth/signin',payload,{  cancelToken: source.token}).then(response => {
-            if(response && response.data && response.data.accessToken){
-                source.cancel();
-                localStorage.setItem('access_token',response.data.accessToken);
-                props.history.push('/');
-            }else{
-                setMessageType('error');
-                const errorMessage = response && response.data ? response.data.message : 'Something has gone wrong!' ;
-                setMessage(errorMessage);
-            }
+
+        const payload = constructAuthPayload(event.target.elements);
+        const {success, message } = await login(payload);
+
+        if (success){
+            props.history.push('/');
+        } else {
+            setMessageType('error');
+            setMessage(message);
             setNotificationOpen(true);
-            source.cancel();
-        })
+        }
     };
 
     const closeNotification = () => {

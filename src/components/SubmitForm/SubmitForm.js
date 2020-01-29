@@ -60,11 +60,11 @@ export default function SubmitForm(props){
         event.persist();
 
         const payload = {
-            plainSequence: event.target.elements['plainSequence'].value,
+            sequence:      event.target.elements['sequence'].value,
             encoderType:   event.target.elements['encoderType'].value,
         };
 
-        if(!payload.plainSequence || !payload.encoderType){
+        if(!payload.sequence || !payload.encoderType){
             setMessage('Empty sequence or undefined encoder type is not allowed!');
             setMessageVisible(true);
             return;
@@ -75,9 +75,9 @@ export default function SubmitForm(props){
             setMessageVisible(true);
         }
         else{
-            if (payload.plainSequence !== plainSequence || payload.encoderType !== encoderType) {
+            if (payload.sequence !== plainSequence || payload.encoderType !== encoderType) {
 
-                const letters = payload.plainSequence.split('');
+                const letters = payload.sequence.split('');
                 let counter = 0;
 
                 letters.forEach(letter => {
@@ -86,15 +86,15 @@ export default function SubmitForm(props){
                 });
 
                 setEncoderType(payload.encoderType);
-                setPlainSequence(payload.plainSequence);
+                setPlainSequence(payload.sequence);
 
-                if (counter === letters.length && payload.plainSequence) {
+                if (counter === letters.length && payload.sequence) {
                     let pairsPayload = {};
                     pairs.forEach(pair => {
                         pairsPayload = {...pairsPayload,[pair.symbol]:pair.probability}
                     });
                     payload.symbolProbabilityPairs = pairsPayload;
-                    getResults(instance.post(`api/encoder/${payload.encoderType}`,payload));
+                    getResults(payload);
                 } else {
                     setMessage("Some letter from plain sequence does not in table.");
                     setMessageVisible(true);
@@ -132,7 +132,7 @@ export default function SubmitForm(props){
                     className={classes.textField}
                     margin="normal"
                     variant="outlined"
-                    name={'plainSequence'}
+                    name={'sequence'}
                     required
                 />
                 <RadioGroup

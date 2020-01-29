@@ -6,7 +6,7 @@ import {jwtDecoder,isTokenExpired} from "../../config/utils"
 export const InternalRoute = ({ component: Component, ...rest }) => {
     let isAuthorize=false;
     const accessToken = localStorage.getItem('access_token');
-    let decodedAccessToken= null;
+    let decodedAccessToken = null;
 
     if(accessToken !== null){
         decodedAccessToken=jwtDecoder(accessToken)

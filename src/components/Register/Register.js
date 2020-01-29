@@ -1,19 +1,20 @@
-import React, {useState}  from 'react';
+import React, {useState}      from 'react';
 
-import Avatar             from '@material-ui/core/Avatar';
-import Button             from '@material-ui/core/Button';
-import CssBaseline        from '@material-ui/core/CssBaseline';
-import TextField          from '@material-ui/core/TextField';
-import Link               from '@material-ui/core/Link';
-import Grid               from '@material-ui/core/Grid';
-import LockOutlinedIcon   from '@material-ui/icons/LockOutlined';
-import Typography         from '@material-ui/core/Typography';
-import { makeStyles }     from '@material-ui/core/styles';
-import Container          from '@material-ui/core/Container';
-import Snackbar           from "@material-ui/core/Snackbar";
+import Avatar                 from '@material-ui/core/Avatar';
+import Button                 from '@material-ui/core/Button';
+import CssBaseline            from '@material-ui/core/CssBaseline';
+import TextField              from '@material-ui/core/TextField';
+import Link                   from '@material-ui/core/Link';
+import Grid                   from '@material-ui/core/Grid';
+import LockOutlinedIcon       from '@material-ui/icons/LockOutlined';
+import Typography             from '@material-ui/core/Typography';
+import { makeStyles }         from '@material-ui/core/styles';
+import Container              from '@material-ui/core/Container';
+import Snackbar               from "@material-ui/core/Snackbar";
 
-import Notification       from "../Notifications/Notifications";
-import instance           from "../../config/axiosConf";
+import Notification           from "../Notifications/Notifications";
+import {constructAuthPayload} from "../../config/utils";
+import {register}             from "../../services/AuthService";
 
 const useStyles = makeStyles(theme => ({
     '@global': {
@@ -49,33 +50,28 @@ export default function SignUp(props) {
     const [messageType,setMessageType] = useState('warning');
     const [message,setMessage] = useState(null);
 
-    const handleSubmit = (event) => {
-        event.preventDefault();
-        event.persist();
-        let payload = {} ;
-        for(let i = 0 ; i < event.target.elements.length ; i ++ ) {
-            if(event.target.elements[i].name){
-                payload[event.target.elements[i].name] = event.target.elements[i].value ;
-            }
-        }
-
-        instance.post('/api/auth/signup',payload).then(response => {
-            const data = response.data ;
-            const { success, message} = data ;
-            setNotificationOpen(true);
-            if (success) {
-                setMessage(message);
-                setTimeout( () => props.history.push('/login'),2000);
-            } else {
-                setMessageType('error');
-                setMessage(message);
-            }
-        });
-    };
-
-
     const closeNotification = () => {
         setNotificationOpen(false);
+    };
+    const openNotification = () => {
+        setNotificationOpen(true);
+    };
+    const handleSubmit = async (event) => {
+        event.preventDefault();
+        event.persist();
+
+        const {elements} = event.target;
+        const payload = constructAuthPayload(elements) ;
+        const {success, message } = await register(payload);
+
+        openNotification();
+        if (success) {
+            setMessage(message);
+            setTimeout( () => props.history.push('/login'),2000);
+        } else {
+            setMessageType('error');
+            setMessage(message);
+        }
     };
 
     return (

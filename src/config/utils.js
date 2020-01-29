@@ -14,3 +14,13 @@ export const checkToken=(config)=> {
     }
     return config;
 };
+
+export function constructAuthPayload(formElements){
+    const payload = {} ;
+    for(const element of  formElements) {
+        if(element.name){
+            payload[element.name] = element.value ;
+        }
+    }
+    return payload;
+}

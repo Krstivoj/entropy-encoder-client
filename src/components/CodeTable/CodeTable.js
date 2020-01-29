@@ -17,6 +17,7 @@ import InputForm                  from "../InputForm/InputForm";
 import SpanningTable              from "../Table/Table";
 import EventEmitter               from "../EventEmitter/EventEmiter";
 import ConfirmationDialog         from "../Modal/ConfirmationDialog";
+import {encode}                   from "../../services/EncodingService";
 
 const useStyles2 = makeStyles(theme => ({
     '@global': {
@@ -108,12 +109,11 @@ export default function CodeTable() {
         pairs.forEach(pair => sum += parseFloat(pair.probability));
         return sum;
     };
-    const getEncodedResults = (promise) => {
+    const getEncodedResults = async (payload) => {
         setLoading(true);
-        promise.then(apiResponse => {
-            setResponse(apiResponse.data);
-            setTimeout( () => setLoading(false),1000);
-        });
+        const data = await encode(payload);
+        setResponse(data);
+        setTimeout( () => setLoading(false),1000);
     };
     const deletePair = (symbol) => {
         setPairs(pairs.filter(pair => pair.symbol !== symbol));
@@ -163,11 +163,30 @@ export default function CodeTable() {
                                         {
                                             pairs.map(row => (
                                                 <TableRow key={row.symbol}>
-                                                    <TableCell component="th" scope="row">{row.symbol}</TableCell>
-                                                    <TableCell align="right">{row.probability}</TableCell>
-                                                    <TableCell align="center">
-                                                        <IconButton onClick={() => deletePair(row.symbol)}><DeleteIcon/></IconButton>
-                                                        <IconButton onClick={() => editPairPair(row.symbol)}><EditIcon/></IconButton>
+                                                    <TableCell
+                                                        component="th"
+                                                        scope="row"
+                                                    >
+                                                        {row.symbol}
+                                                    </TableCell>
+                                                    <TableCell
+                                                        align="right"
+                                                    >
+                                                        {row.probability}
+                                                    </TableCell>
+                                                    <TableCell
+                                                        align="center"
+                                                    >
+                                                        <IconButton
+                                                            onClick={() => deletePair(row.symbol)}
+                                                        >
+                                                            <DeleteIcon/>
+                                                        </IconButton>
+                                                        <IconButton
+                                                            onClick={() => editPairPair(row.symbol)}
+                                                        >
+                                                            <EditIcon/>
+                                                        </IconButton>
                                                     </TableCell>
                                             </TableRow>
                                         ))
@@ -175,8 +194,21 @@ export default function CodeTable() {
                                         {
                                             ( pairs.length > 0) &&
                                             <TableRow>
-                                                <TableCell component="th" scope="row" style={{border: 'none', marginRight: '0'}} align="right" colSpan={3}>
-                                                    <Button variant="contained" color="secondary" style={{marginRight: '0'}} onClick={clearTable}> Clear Table</Button>
+                                                <TableCell
+                                                    component="th"
+                                                    scope="row"
+                                                    style={{border: 'none', marginRight: '0'}}
+                                                    align="right"
+                                                    colSpan={3}
+                                                >
+                                                    <Button
+                                                        variant="contained"
+                                                        color="secondary"
+                                                        style={{marginRight: '0'}}
+                                                        onClick={clearTable}
+                                                    >
+                                                        Clear Table
+                                                    </Button>
                                                 </TableCell>
                                             </TableRow>
                                         }

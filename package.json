@@ -10,9 +10,11 @@
     "jwt-decode": "^2.2.0",
     "material-table": "^1.40.1",
     "material-ui": "latest",
+    "material-ui-dropzone": "^2.4.7",
     "material-ui-pagination": "^1.1.6",
     "material-ui-table-edit": "^3.0.3",
-    "node-sass": "^4.12.0",
+    "node-sass": "^4.13.1",
+    "paho-mqtt": "^1.1.0",
     "peer-dependency": "^1.1.0",
     "prop-types": "latest",
     "rc-pagination": "^1.20.5",
@@ -21,8 +23,12 @@
     "react-json-table": "^0.1.1",
     "react-router": "^5.0.1",
     "react-router-dom": "^5.0.1",
-    "react-scripts": "3.0.1",
-    "redux": "^4.0.1"
+    "react-scripts": "^3.3.0",
+    "redux": "^4.0.1",
+    "sockjs-client": "^1.4.0",
+    "stompjs": "^2.3.3",
+    "websocket": "^1.0.31",
+    "webstomp-client": "^1.2.6"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -46,6 +52,7 @@
     ]
   },
   "devDependencies": {
+    "@babel/plugin-proposal-numeric-separator": "^7.7.4",
     "redux-devtools": "^3.5.0"
   }
 }
