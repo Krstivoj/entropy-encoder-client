@@ -2,35 +2,19 @@ import {useEffect, useRef, useState} from "react";
 import React                         from "react";
 import PropTypes                     from "prop-types";
 
-import {makeStyles}                  from "@material-ui/core";
 import TextField                     from "@material-ui/core/TextField";
 import Button                        from "@material-ui/core/Button";
 import Snackbar                      from "@material-ui/core/Snackbar";
 
-import Notification                  from "../Notifications/Notifications";
-import EventEmitter                  from "../EventEmitter/EventEmiter";
-
-const useStyles = makeStyles(theme => ({
-    container: {
-        display       : 'flex',
-        flexWrap      : 'wrap',
-        flexDirection : 'column',
-        minWidth      : 300,
-        margin: theme.spacing(0,1)
-    },
-    textField: {
-        margin: theme.spacing(2)
-    },
-    button: {
-        margin : theme.spacing(2)
-    }
-}));
+import CustomSnackbar                from "../Snackbar/Snackbar";
+import EventEmitter                  from "../../EventEmitter/EventEmiter";
+import styles                        from "./InputForm.style";
 
 export default function InputForm(props) {
 
     const {pairs}  = props;
-    const classes = useStyles();
-    const [isNotificationOpen,setNotificationOpen] = useState(false);
+    const classes = styles();
+    const [isSnackbarOpen,setSnackbarOpen] = useState(false);
     const [message,setMessage] = useState(null);
     const symbolRef = useRef(null);
     const probabilityRef = useRef(null);
@@ -62,7 +46,7 @@ export default function InputForm(props) {
             };
         if(!newPair.symbol || !newPair.probability){
             setMessage('Empty fields not allowed!');
-            setNotificationOpen(true);
+            setSnackbarOpen(true);
             return;
         }
         if ( (!pairs.some(pair => pair.symbol === newPair.symbol) && parseFloat(newPair.probability) <= 1.0) || editablePair ) {
@@ -71,12 +55,12 @@ export default function InputForm(props) {
                 setEditablePair(null);
         } else {
             setMessage('Symbol already exists!');
-            setNotificationOpen(true);
+            setSnackbarOpen(true);
         }
         symbolRef.current.firstChild.control.focus();
     };
     const closeNotification = () => {
-        setNotificationOpen(false);
+        setSnackbarOpen(false);
     };
     return (
         <>
@@ -85,11 +69,11 @@ export default function InputForm(props) {
                     vertical: 'bottom',
                     horizontal: 'left',
                 }}
-                open={isNotificationOpen}
+                open={isSnackbarOpen}
                 autoHideDuration={2000}
                 onClose={closeNotification}
             >
-                <Notification
+                <CustomSnackbar
                     variant="warning"
                     message={message}
                     onClose={closeNotification}

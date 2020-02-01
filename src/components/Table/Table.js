@@ -1,5 +1,5 @@
 import React          from 'react';
-import { makeStyles } from '@material-ui/core/styles';
+
 import Table          from '@material-ui/core/Table';
 import TableBody      from '@material-ui/core/TableBody';
 import TableCell      from '@material-ui/core/TableCell';
@@ -7,26 +7,7 @@ import TableHead      from '@material-ui/core/TableHead';
 import TableRow       from '@material-ui/core/TableRow';
 import Paper          from '@material-ui/core/Paper';
 
-const useStyles = makeStyles(theme => ({
-    root: {
-        width: '100%',
-        overflowX: 'auto',
-        display:'flex',
-        padding: '30px 10px',
-        margin : theme.spacing(1),
-        justifyContent:'center',
-        alignItems:'center',
-    },
-    table: {
-        width: '100%',
-        height: '100%',
-        display: 'flex',
-        justifyContent:'center',
-        alignItems:'center',
-        flexDirection:'column'
-    },
-}));
-
+import styles         from './Table.styles';
 /**
  *
  * @param object
@@ -74,7 +55,7 @@ export function generateStringFromCamelCase(camelCaseString) {
 export default function SpanningTable(props) {
 
     const {response = {} } = props ;
-    const classes = useStyles();
+    const classes = styles();
 
     const responseKeys = getKeySet(response) ;
 

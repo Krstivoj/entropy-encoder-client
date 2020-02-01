@@ -3,19 +3,11 @@ import React        from "react";
 import Card         from "@material-ui/core/Card";
 import Typography   from "@material-ui/core/Typography";
 import CardContent  from "@material-ui/core/CardContent";
-import {makeStyles} from "@material-ui/core";
-
-const useStyles = makeStyles({
-    card: {
-        minWidth: 275,
-        margin: '20px'
-    }
-});
+import style        from "./NoData.style";
 
 export const NoData = (props) => {
 
-    const classes = useStyles();
-
+    const classes = style();
     return (
         <Card className={classes.card}>
             <CardContent>

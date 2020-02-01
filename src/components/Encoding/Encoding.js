@@ -1,7 +1,6 @@
 import React, {useEffect, useState}     from 'react';
 import Pagination                       from 'rc-pagination';
 
-import {makeStyles}                     from "@material-ui/core";
 import CircularProgress                 from "@material-ui/core/CircularProgress";
 
 import EncodingReport                   from "../EncodingReport/EncodingReport";
@@ -10,37 +9,9 @@ import webstomp                         from 'webstomp-client';
 import {DropzoneArea}                   from 'material-ui-dropzone'
 import LinearBuffer                     from "../ProgressBar/LinearProgressBar";
 import {getEncodings}                   from "../../services/EncodingService";
-import {uploadFile}                    from "../../services/FileService";
-
+import {uploadFile}                     from "../../services/FileService";
+import styles                           from "./Encoding.style";
 import 'rc-pagination/assets/index.css';
-
-const useStyles = makeStyles(theme => ({
-    '@global': {
-        body: {
-            backgroundColor: theme.palette.common.white,
-            width: '100%'
-        },
-    },
-    card: {
-        minWidth: 275,
-    },
-    bullet: {
-        display: 'inline-block',
-        margin: '0 2px',
-        transform: 'scale(0.8)',
-    },
-    title: {
-        fontSize: 14,
-    },
-    pos: {
-        marginBottom: 12,
-    },
-    container: {
-        display: 'flex',
-        flexDirection: 'column',
-        width:'100%'
-    }
-}));
 
 /**
  *
@@ -49,7 +20,7 @@ const useStyles = makeStyles(theme => ({
  */
 export default function Encoding() {
 
-    const classes = useStyles();
+    const classes = styles();
     const [currentPage,setCurrentPage] = useState(1);
     const [data,setData] = useState(null);
     const [isLoading,setLoading] = useState(true);

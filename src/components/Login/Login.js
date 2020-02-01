@@ -8,48 +8,20 @@ import Checkbox               from '@material-ui/core/Checkbox';
 import Link                   from '@material-ui/core/Link';
 import Grid                   from '@material-ui/core/Grid';
 import Typography             from '@material-ui/core/Typography';
-import { makeStyles }         from '@material-ui/core/styles';
 import Container              from '@material-ui/core/Container';
 import LockOutlinedIcon       from '@material-ui/icons/LockOutlined';
 import Snackbar               from "@material-ui/core/Snackbar";
 
-import Notification           from '../Notifications/Notifications';
+import CustomSnackbar         from '../Snackbar/Snackbar';
 import {login}                from "../../services/AuthService";
 import {constructAuthPayload} from "../../config/utils";
-
-const useStyles = makeStyles(theme => ({
-    '@global': {
-        body: {
-            backgroundColor: theme.palette.common.white,
-            width: '100%'
-        },
-    },
-    paper: {
-        marginTop: theme.spacing(8),
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        alignContent: 'center',
-        justifyContent: 'center'
-    },
-    avatar: {
-        margin: theme.spacing(1),
-        backgroundColor: theme.palette.secondary.main,
-    },
-    form: {
-        width: '100%',
-        marginTop: theme.spacing(1),
-    },
-    submit: {
-        margin: theme.spacing(3, 0, 2),
-    },
-}));
+import styles                 from "./Login.style"
 
 export default function SignIn(props) {
 
-    const classes = useStyles();
+    const classes = styles();
 
-    const [isNotificationOpen,setNotificationOpen] = useState(false);
+    const [isSnackbarOpen,setSnackbarOpen] = useState(false);
     const [messageType,setMessageType] = useState('warning');
     const [message,setMessage] = useState(null);
 
@@ -66,12 +38,12 @@ export default function SignIn(props) {
         } else {
             setMessageType('error');
             setMessage(message);
-            setNotificationOpen(true);
+            setSnackbarOpen(true);
         }
     };
 
     const closeNotification = () => {
-        setNotificationOpen(false);
+        setSnackbarOpen(false);
     };
 
     return (
@@ -81,11 +53,11 @@ export default function SignIn(props) {
                     vertical: 'bottom',
                     horizontal: 'left',
                 }}
-                open={isNotificationOpen}
+                open={isSnackbarOpen}
                 autoHideDuration={2000}
                 onClose={closeNotification}
             >
-                <Notification
+                <CustomSnackbar
                     variant={messageType}
                     message={message}
                     onClose={closeNotification}

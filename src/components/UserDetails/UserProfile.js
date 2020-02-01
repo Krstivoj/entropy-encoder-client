@@ -1,59 +1,30 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState}     from 'react';
 
-import Avatar                       from '@material-ui/core/Avatar';
-import Button                       from '@material-ui/core/Button';
-import CssBaseline                  from '@material-ui/core/CssBaseline';
-import TextField                    from '@material-ui/core/TextField';
-import Grid                         from '@material-ui/core/Grid';
-import LockOutlinedIcon             from '@material-ui/icons/LockOutlined';
-import Typography                   from '@material-ui/core/Typography';
-import { makeStyles }               from '@material-ui/core/styles';
-import Container                    from '@material-ui/core/Container';
-import Snackbar                     from "@material-ui/core/Snackbar";
+import Avatar                           from '@material-ui/core/Avatar';
+import Button                           from '@material-ui/core/Button';
+import CssBaseline                      from '@material-ui/core/CssBaseline';
+import TextField                        from '@material-ui/core/TextField';
+import Grid                             from '@material-ui/core/Grid';
+import LockOutlinedIcon                 from '@material-ui/icons/LockOutlined';
+import Typography                       from '@material-ui/core/Typography';
+import Container                        from '@material-ui/core/Container';
+import Snackbar                         from "@material-ui/core/Snackbar";
 
-import Notification                 from "../Notifications/Notifications";
-import instance                     from "../../config/axiosConf";
-
-const useStyles = makeStyles(theme => ({
-    '@global': {
-        body: {
-            backgroundColor: theme.palette.common.white,
-            width: '100%'
-        },
-    },
-    paper: {
-        marginTop: theme.spacing(8),
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-    },
-    avatar: {
-        margin: theme.spacing(1),
-        backgroundColor: theme.palette.secondary.main,
-    },
-    form: {
-        width: '100%',
-        marginTop: theme.spacing(3),
-    },
-    submit: {
-        margin: theme.spacing(3, 0, 2),
-    },
-    logoutButton:{
-        display: 'flex',
-        right : 0,
-        position:'absolute',
-        marginRight: 10
-    }
-}));
+import CustomSnackbar                   from "../Snackbar/Snackbar";
+import styles                           from './UserProfile.styles';
+import {changePassword, getUserProfile} from "../../services/AuthService";
 
 /**
- * @return {null}
+ *
+ * @param props
+ * @returns {null}
+ * @constructor
  */
 export default function UserProfile(props) {
 
-    const classes = useStyles();
+    const classes = styles();
     const [userProfile,setUserProfile] = useState({});
-    const [isNotificationOpen,setNotificationOpen] = useState(false);
+    const [isSnackbarOpen,setSnackbarOpen] = useState(false);
     const [message,setMessage] = useState(null);
     const [messageType,setMessageType] = useState('warning');
 
@@ -62,39 +33,37 @@ export default function UserProfile(props) {
         props.history.push('/#/login');
     };
 
-    const handleSubmit = (event) => {
+    const handleSubmit = async (event) => {
         event.preventDefault();
         event.persist();
         const payload = {
             oldPassword : event.target.elements['oldPassword'].value,
             newPassword : event.target.elements['newPassword'].value
         };
-        instance.post('api/auth/changepassword',payload).then(response => {
-            if(response.status >= 100 && response.status <= 300){
-                setMessageType('success');
-                setMessage(`${response.data.message}, You must login again`);
-                setTimeout(() => logout(),3000);
-            }else{
-                setMessageType('warning');
-                setMessage(response.data.message);
-            }
-            setNotificationOpen(true);
-        });
+
+        const {success, message } = await changePassword(payload);
+
+        if(success){
+            setMessageType('success');
+            setMessage(`${message}, You must login again`);
+            setTimeout(() => logout(),3000);
+        } else {
+            setMessageType('warning');
+            setMessage(message);
+        }
+        setSnackbarOpen(true);
     };
 
     useEffect(() => {
-        const abortController = new AbortController();
-        instance.get('api/auth/profile').then(response => {
-            setUserProfile(response.data);
-        });
-        return () => {
-            abortController.abort();
-        }
-
+        const getProfile = async () => {
+            const data = await getUserProfile();
+            setUserProfile(data);
+        };
+        getProfile();
     },[]);
 
     const closeNotification = () => {
-        setNotificationOpen(false);
+        setSnackbarOpen(false);
     };
 
     return userProfile.username ? (
@@ -104,11 +73,11 @@ export default function UserProfile(props) {
                     vertical: 'bottom',
                     horizontal: 'left',
                 }}
-                open={isNotificationOpen}
+                open={isSnackbarOpen}
                 autoHideDuration={2000}
                 onClose={closeNotification}
             >
-                <Notification
+                <CustomSnackbar
                     variant={messageType}
                     message={message}
                     onClose={closeNotification}

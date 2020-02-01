@@ -1,20 +1,11 @@
 import React, {useEffect, useState}  from 'react';
 
-import { makeStyles }                from '@material-ui/core/styles';
 import LinearProgress                from '@material-ui/core/LinearProgress';
-
-const useStyles = makeStyles(theme => ({
-    root: {
-        width: '100%',
-        '& > * + *': {
-            marginTop: theme.spacing(2),
-        },
-    },
-}));
+import styles                        from './LinearProgressBar.styles';
 
 export default function LinearBuffer(props) {
 
-    const classes = useStyles();
+    const classes = styles();
     const [completed, setCompleted] = useState(0);
 
     useEffect(() => {

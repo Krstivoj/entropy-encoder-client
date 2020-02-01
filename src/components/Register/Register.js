@@ -8,53 +8,27 @@ import Link                   from '@material-ui/core/Link';
 import Grid                   from '@material-ui/core/Grid';
 import LockOutlinedIcon       from '@material-ui/icons/LockOutlined';
 import Typography             from '@material-ui/core/Typography';
-import { makeStyles }         from '@material-ui/core/styles';
 import Container              from '@material-ui/core/Container';
 import Snackbar               from "@material-ui/core/Snackbar";
 
-import Notification           from "../Notifications/Notifications";
+import CustomSnackbar         from "../Snackbar/Snackbar";
 import {constructAuthPayload} from "../../config/utils";
 import {register}             from "../../services/AuthService";
+import  styles                from "./Register.styles";
 
-const useStyles = makeStyles(theme => ({
-    '@global': {
-        body: {
-            backgroundColor: theme.palette.common.white,
-            width: '100%'
-        },
-    },
-    paper: {
-        marginTop: theme.spacing(8),
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-    },
-    avatar: {
-        margin: theme.spacing(1),
-        backgroundColor: theme.palette.secondary.main,
-    },
-    form: {
-        width: '100%', // Fix IE 11 issue.
-        marginTop: theme.spacing(3),
-    },
-    submit: {
-        margin: theme.spacing(3, 0, 2),
-    },
-}));
+export default function Register(props) {
 
-export default function SignUp(props) {
+    const classes = styles();
 
-    const classes = useStyles();
-
-    const [isNotificationOpen,setNotificationOpen] = useState(false);
+    const [isSnackBarOpen,setSnackBarOpen] = useState(false);
     const [messageType,setMessageType] = useState('warning');
     const [message,setMessage] = useState(null);
 
     const closeNotification = () => {
-        setNotificationOpen(false);
+        setSnackBarOpen(false);
     };
     const openNotification = () => {
-        setNotificationOpen(true);
+        setSnackBarOpen(true);
     };
     const handleSubmit = async (event) => {
         event.preventDefault();
@@ -81,11 +55,11 @@ export default function SignUp(props) {
                     vertical: 'bottom',
                     horizontal: 'left',
                 }}
-                open={isNotificationOpen}
+                open={isSnackBarOpen}
                 autoHideDuration={2000}
                 onClose={closeNotification}
             >
-                <Notification
+                <CustomSnackbar
                     variant={messageType}
                     message={message}
                     onClose={closeNotification}

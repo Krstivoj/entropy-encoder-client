@@ -1,58 +1,25 @@
 import React, {useState}    from "react";
 import PropTypes            from 'prop-types';
 
-import {makeStyles}         from "@material-ui/core";
 import RadioGroup           from "@material-ui/core/RadioGroup";
 import FormControlLabel     from "@material-ui/core/FormControlLabel";
 import Radio                from "@material-ui/core/Radio";
 import Button               from "@material-ui/core/Button";
 import TextField            from "@material-ui/core/TextField";
 import Snackbar             from "@material-ui/core/Snackbar";
+import CustomSnackbar       from "../Snackbar/Snackbar";
+import styles               from "./SubmitForm.styles";
 
-import Notification         from "../Notifications/Notifications";
-
-import instance             from "../../config/axiosConf";
-
-const useStyles = makeStyles(theme => ({
-    root: {
-        display: 'flex',
-        flexDirection: 'column',
-        width: '100%',
-        margin: theme.spacing(2),
-    },
-    formControl: {
-        margin: theme.spacing(0,1),
-    },
-    group: {
-        margin: theme.spacing( 1),
-    },
-    textField: {
-        marginLeft: theme.spacing(1),
-        marginRight: theme.spacing(1),
-    },
-    container: {
-        display: 'flex',
-        flexWrap: 'wrap',
-        flexDirection: 'column',
-        width: '100%',
-        minWidth: 200,
-        justifyContent: 'stretch',
-        alignItems: 'stretch'
-    },
-    button: {
-        margin: theme.spacing(2),
-    }
-}));
 
 export default function SubmitForm(props){
 
     const { pairs, sumProbabilities, getResults } = props;
-    const classes = useStyles();
+    const classes = styles();
 
     const [plainSequence,setPlainSequence] = useState(null);
     const [encoderType,setEncoderType] = useState(null);
     const [message,setMessage] = useState(null);
-    const [isMessageVisible,setMessageVisible] = useState(false);
+    const [isSnackbarOpen,setSnackbarOpen] = useState(false);
 
     const handleSubmit = event => {
 
@@ -66,13 +33,13 @@ export default function SubmitForm(props){
 
         if(!payload.sequence || !payload.encoderType){
             setMessage('Empty sequence or undefined encoder type is not allowed!');
-            setMessageVisible(true);
+            setSnackbarOpen(true);
             return;
         }
 
         if(parseFloat(parseFloat(sumProbabilities()).toPrecision(2)) !== 1.0){
             setMessage("Sum of probabilities does not equal to 1.0");
-            setMessageVisible(true);
+            setSnackbarOpen(true);
         }
         else{
             if (payload.sequence !== plainSequence || payload.encoderType !== encoderType) {
@@ -97,16 +64,16 @@ export default function SubmitForm(props){
                     getResults(payload);
                 } else {
                     setMessage("Some letter from plain sequence does not in table.");
-                    setMessageVisible(true);
+                    setSnackbarOpen(true);
                 }
             } else {
                 setMessage("Your result is already here.");
-                setMessageVisible(true);
+                setSnackbarOpen(true);
             }
         }
     };
     const closeNotification = () => {
-        setMessageVisible(false);
+        setSnackbarOpen(false);
     };
     return (
         <>
@@ -115,11 +82,11 @@ export default function SubmitForm(props){
                     vertical: 'bottom',
                     horizontal: 'left',
                 }}
-                open={isMessageVisible}
+                open={isSnackbarOpen}
                 autoHideDuration={2000}
                 onClose={closeNotification}
             >
-                <Notification
+                <CustomSnackbar
                     variant="warning"
                     message={message}
                     onClose={closeNotification}

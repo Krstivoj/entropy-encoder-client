@@ -1,6 +1,5 @@
 import React , {useState}         from 'react';
 import {useCallback, useEffect}   from 'react';
-import { makeStyles }             from '@material-ui/core/styles';
 import Table                      from '@material-ui/core/Table';
 import TableBody                  from '@material-ui/core/TableBody';
 import TableCell                  from '@material-ui/core/TableCell';
@@ -15,61 +14,14 @@ import CircularProgress           from "@material-ui/core/CircularProgress";
 import SubmitForm                 from "../SubmitForm/SubmitForm";
 import InputForm                  from "../InputForm/InputForm";
 import SpanningTable              from "../Table/Table";
-import EventEmitter               from "../EventEmitter/EventEmiter";
+import EventEmitter               from "../../EventEmitter/EventEmiter";
 import ConfirmationDialog         from "../Modal/ConfirmationDialog";
 import {encode}                   from "../../services/EncodingService";
-
-const useStyles2 = makeStyles(theme => ({
-    '@global': {
-        body: {
-            backgroundColor: theme.palette.common.white,
-            width: '100%'
-        },
-    },
-    root: {
-        margin: theme.spacing(1),
-    },
-    table: {
-        width: '100%',
-        padding: theme.spacing(1),
-        display:'flex',
-        justifyContent: 'center',
-        alignItems: 'center'
-    },
-    tableWrapper: {
-        overflowX: 'hidden',
-        margin: theme.spacing(1),
-        width : '100%',
-        display:'flex',
-        justifyContent: 'center',
-        alignItems: 'center'
-    },
-    inputContainer:{
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'stretch',
-        alignItems: 'stretch',
-        margin: theme.spacing(1),
-        position:'relative'
-    },
-    forms : {
-        display: 'flex',
-        flexDirection: 'row'
-    },
-    results :{
-        display:'flex',
-        flexDirection:'row',
-        margin: theme.spacing(1),
-    },
-    container:{
-        display:'flex',
-        flexDirection:'row'
-    }
-}));
+import styles                     from "./CodeTable.style";
 
 export default function CodeTable() {
 
-    const classes = useStyles2();
+    const classes = styles();
     const [pairs, setPairs] = useState([]);
 
     const [response, setResponse] = useState({});

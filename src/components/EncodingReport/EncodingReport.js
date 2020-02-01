@@ -1,5 +1,4 @@
 import React            from 'react';
-import { makeStyles }   from '@material-ui/core/styles';
 import Card             from '@material-ui/core/Card';
 import CardContent      from '@material-ui/core/CardContent';
 import Typography       from '@material-ui/core/Typography';
@@ -9,42 +8,7 @@ import TableBody        from '@material-ui/core/TableBody';
 import TableCell        from '@material-ui/core/TableCell';
 import TableHead        from '@material-ui/core/TableHead';
 import TableRow         from '@material-ui/core/TableRow';
-
-const useStyles = makeStyles({
-    card: {
-        minWidth: 275,
-        margin: '20px'
-    },
-    bullet: {
-        display: 'inline-block',
-        margin: '0 2px',
-        transform: 'scale(0.8)',
-    },
-    title: {
-        fontSize: '20px',
-    },
-    pos: {
-        marginBottom: 12,
-    },
-    details : {
-        width:'20%',
-        display: 'flex',
-        flexDirection:'column',
-        justifyItems:'center',
-        justifyContent:'left',
-        alignItems:'center'
-    },
-    column : {
-        display: 'flex',
-        flexDirection: 'column',
-        width: '50%'
-    },
-    row : {
-        display: 'flex',
-        flexDirection: 'row',
-        width: '100%'
-    }
-});
+import styles           from './EncodingReport.style';
 
 const columns = [
     {
@@ -89,15 +53,10 @@ function generateTableBody(keys, pairs){
                 </TableRow>
     });
 }
-/**
- *
- * @param props
- * @returns {*}
- * @constructor
- */
+
 export default function EncodingReport(props) {
 
-    const classes = useStyles();
+    const classes = styles();
     const { createdAt, plainSequence, symbolProbabilityPairs = {} } = props;
     const keys = Object.keys(symbolProbabilityPairs);
 
