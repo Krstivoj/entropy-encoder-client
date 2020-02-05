@@ -1,18 +1,18 @@
 import {makeStyles} from "@material-ui/core";
 
 const styles = makeStyles(theme => ({
-    container: {
-        display       : 'flex',
-        flexWrap      : 'wrap',
-        flexDirection : 'column',
-        minWidth      : 300,
-        margin: theme.spacing(0,1)
-    },
     textField: {
-        margin: theme.spacing(2)
+        minWidth: "100%",
+        maxWidth: "100%",
+        flexGrow: 1
     },
     button: {
-        margin : theme.spacing(2)
+        minWidth: "100%",
+        maxWidth: "100%",
+        flexGrow: 1
+    },
+    root: {
+        flexGrow: 1
     }
 }));
 

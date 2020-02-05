@@ -1,16 +1,16 @@
 import React, {useEffect, useState}     from 'react';
 import Pagination                       from 'rc-pagination';
 
-import CircularProgress                 from "@material-ui/core/CircularProgress";
-
-import EncodingReport                   from "../EncodingReport/EncodingReport";
-import {NoData}                         from "../NoData/NoData";
 import webstomp                         from 'webstomp-client';
-import {DropzoneArea}                   from 'material-ui-dropzone'
-import LinearBuffer                     from "../ProgressBar/LinearProgressBar";
-import {getEncodings}                   from "../../services/EncodingService";
-import {uploadFile}                     from "../../services/FileService";
-import styles                           from "./Encoding.style";
+
+import CircularProgress                 from '@material-ui/core/CircularProgress';
+
+import EncodingReport                   from '../EncodingReport/EncodingReport';
+import {NoData}                         from '../NoData/NoData';
+import {getEncodings}                   from '../../services/EncodingService';
+import {uploadFile}                     from '../../services/FileService';
+
+import styles                           from './Encoding.style';
 import 'rc-pagination/assets/index.css';
 
 /**
@@ -60,7 +60,7 @@ export default function Encoding() {
 
         const webSocket = new WebSocket('ws://localhost:4000/api/ws');
         const ws = webstomp.over(webSocket);
-        const token = localStorage.getItem("access_token");
+        const token = localStorage.getItem('access_token');
         document.cookie = `token=${token}`;
 
         ws.connect({}, () => subscriber(ws));
@@ -111,14 +111,6 @@ export default function Encoding() {
                     style={{display: 'flex', justifyContent: 'center'}}
                 /> : null
             }
-            <DropzoneArea
-                onChange={onChangeHandler}
-                maxFileSize={30*100*100*100}
-                initialFiles={files}
-            />
-            <button>SSS</button>
-            <button onClick={submit}>Upload</button>
-            <LinearBuffer value={progress}/>
         </div> :
             <CircularProgress
                 style={{width:'100px', height: '100px', position: 'absolute', top: '300px'}}

@@ -5,6 +5,7 @@ import PropTypes                     from "prop-types";
 import TextField                     from "@material-ui/core/TextField";
 import Button                        from "@material-ui/core/Button";
 import Snackbar                      from "@material-ui/core/Snackbar";
+import Grid                          from "@material-ui/core/Grid";
 
 import CustomSnackbar                from "../Snackbar/Snackbar";
 import EventEmitter                  from "../../EventEmitter/EventEmiter";
@@ -62,6 +63,12 @@ export default function InputForm(props) {
     const closeNotification = () => {
         setSnackbarOpen(false);
     };
+    const handleEnterPress = (event, reference) => {
+        if(event.key === 'Enter'){
+            event.preventDefault();
+            reference.current.firstChild.control.focus();
+        }
+    };
     return (
         <>
             <Snackbar
@@ -79,45 +86,46 @@ export default function InputForm(props) {
                     onClose={closeNotification}
                 />
             </Snackbar>
-            <form className={classes.container} noValidate autoComplete="off" onSubmit={handleSubmit}>
-                <TextField
-                    id="symbol"
-                    label="Symbol"
-                    className={classes.textField}
-                    margin="normal"
-                    variant="outlined"
-                    inputProps={{maxLength: 1}}
-                    name={'symbol'}
-                    required
-                    onKeyPress={ event => {
-                        if(event.key === 'Enter'){
-                            event.preventDefault();
-                            probabilityRef.current.firstChild.control.focus();
-                        }
-                    }}
-                    ref={symbolRef}
-                />
-                <TextField
-                    id="probability"
-                    label="Probability"
-                    className={classes.textField}
-                    margin="normal"
-                    variant="outlined"
-                    autoComplete={'off'}
-                    type={'number'}
-                    inputProps={{max: 1.0, min: 0.0}}
-                    name={'probability'}
-                    required
-                    onKeyPress={ event =>{
-                        if(event.key === 'Enter'){
-                            symbolRef.current.firstChild.control.focus();
-                        }
-                    }}
-                    ref={probabilityRef}
-                />
-                <Button variant="contained" color="primary" className={classes.button} type={'submit'}>
-                    { editablePair ? "Update" : "Add"}
-                </Button>
+            <form noValidate autoComplete="off" onSubmit={handleSubmit}>
+                <div className={classes.root}>
+                    <Grid container spacing={1}>
+                        <Grid item xs={12}>
+                            <TextField
+                                id="symbol"
+                                label="Symbol"
+                                className={classes.textField}
+                                margin="normal"
+                                variant="outlined"
+                                inputProps={{maxLength: 1}}
+                                name={'symbol'}
+                                required
+                                onKeyPress={event => handleEnterPress(event, probabilityRef)}
+                                ref={symbolRef}
+                            />
+                        </Grid>
+                        <Grid item xs={12}>
+                            <TextField
+                                id="probability"
+                                label="Probability"
+                                className={classes.textField}
+                                margin="normal"
+                                variant="outlined"
+                                autoComplete={'off'}
+                                type={'number'}
+                                inputProps={{max: 1.0, min: 0.0}}
+                                name={'probability'}
+                                required
+                                onKeyPress={ event => handleEnterPress(event,symbolRef)}
+                                ref={probabilityRef}
+                            />
+                        </Grid>
+                        <Grid item xs={12}>
+                            <Button variant="contained" color="primary" className={classes.button} type={'submit'}>
+                                { editablePair ? "Update" : "Add"}
+                            </Button>
+                        </Grid>
+                    </Grid>
+                </div>
             </form>
         </>
     );

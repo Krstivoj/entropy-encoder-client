@@ -7,7 +7,7 @@ import TableHead      from '@material-ui/core/TableHead';
 import TableRow       from '@material-ui/core/TableRow';
 import Paper          from '@material-ui/core/Paper';
 
-import styles         from './Table.styles';
+import styles         from './ResponseTable.styles';
 /**
  *
  * @param object
@@ -52,7 +52,7 @@ export function generateStringFromCamelCase(camelCaseString) {
  * @returns {*}
  * @constructor
  */
-export default function SpanningTable(props) {
+export default function ResponseTable(props) {
 
     const {response = {} } = props ;
     const classes = styles();

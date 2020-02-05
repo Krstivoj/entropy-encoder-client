@@ -13,6 +13,15 @@ const styles = makeStyles(theme => ({
     },
     root: {
         flexGrow: 1
+    },
+    group: {
+        margin: theme.spacing( 2.2),
+        paddingBottom: theme.spacing(0.4),
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'center',
+        maxWidth: '100%',
+        flexGrow: 1
     }
 }));
 

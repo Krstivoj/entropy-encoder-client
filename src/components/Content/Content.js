@@ -27,7 +27,7 @@ import Tooltip                  from '@material-ui/core/Tooltip';
 
 import UserProfile              from '../UserDetails/UserProfile';
 import {ListIcon}               from '../../config/costants';
-import CodeTable                from '../CodeTable/CodeTable';
+import HomePage                from '../HomePage/HomePage';
 import Encoding                 from '../Encoding/Encoding';
 import Login                    from "../Login/Login";
 import styles                   from "./Content.styles";
@@ -144,7 +144,7 @@ export default function Content(props) {
                 <div className={classes.drawerHeader}>
                     <Switch>
                         <HashRouter>
-                            <Route exact path='/' component={CodeTable}/>
+                            <Route exact path='/' component={HomePage}/>
                             <Route exact path='/profile' component={UserProfile}/>
                             <Route exact path='/encodings' component={Encoding}/>
                             <Route exact path='/login' component={Login} onEnter={checkIsLogged}/>
