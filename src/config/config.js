@@ -2,7 +2,7 @@ import localConfig   from './config.local.json';
 import stagingConfig from './config.staging.json';
 
 export function config() {
-  switch (process.env.REACT_APP_ENV) {
+  switch (process.env.NODE_ENV) {
     case 'development':
     case 'test': {
       return localConfig;

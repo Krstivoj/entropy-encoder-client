@@ -3,13 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="fd3f35d3-19ca-4726-8393-c08ef4657aa7" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/Encoding/Encoding.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Encoding/Encoding.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/HomePage/HomePage.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/HomePage/HomePage.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/config/axiosConf.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/config/axiosConf.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/config/config.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/config/config.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/config/config.local.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/config/config.local.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/config/config.staging.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/config/config.staging.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/services/AuthService.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/services/AuthService.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -97,7 +91,7 @@
       <workItem from="1582751394599" duration="2183000" />
       <workItem from="1583090631073" duration="312000" />
       <workItem from="1583621452836" duration="194000" />
-      <workItem from="1583667677688" duration="941000" />
+      <workItem from="1583667677688" duration="2077000" />
     </task>
     <servers />
   </component>
