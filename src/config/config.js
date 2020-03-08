@@ -11,7 +11,7 @@ export function config() {
       return stagingConfig;
     }
     case 'production': {
-      return {};
+      return stagingConfig;
     }
 
     default: {

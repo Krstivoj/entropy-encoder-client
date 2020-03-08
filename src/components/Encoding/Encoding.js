@@ -44,7 +44,7 @@ export default function Encoding() {
 
     useEffect( () => {
         getData();
-    },[currentPage]);
+    },[currentPage, getData]);
 
     const subscriber = (ws) => {
         ws.subscribe('/topic/reply', function (message) {

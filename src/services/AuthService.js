@@ -1,14 +1,13 @@
 import axios                        from "axios";
 import instance                     from "../config/axiosConf";
 import {isTokenExpired, jwtDecoder} from "../config/utils";
-import {async} from "q";
 
 export async function login(payload){
     const CancelToken = axios.CancelToken;
     const source = CancelToken.source();
-    const response = await instance.post('/api/auth/signin', payload, { cancelToken: source.token });
+    const response = await instance.post('/api/auth/sign-in', payload, { cancelToken: source.token });
     let errorMessage = null;
-    let success = null;
+    let success;
     if(response && response.data && response.data.accessToken){
         source.cancel();
         localStorage.setItem('access_token',response.data.accessToken);
@@ -24,7 +23,7 @@ export async function login(payload){
 }
 
 export async function register(payload){
-    const response = await instance.post('/api/auth/signup',payload);
+    const response = await instance.post('/api/auth/sign-up',payload);
     return response.data;
 }
 
@@ -38,9 +37,9 @@ export function isAuthorised(){
 }
 
 export async function changePassword(payload){
-    const response = await instance.post('api/auth/changepassword',payload);
-    let message = null;
-    let success = null;
+    const response = await instance.put('api/auth/password',payload);
+    let message;
+    let success;
     if(response.status >= 100 && response.status <= 300){
         success = true;
         message = `${response.data.message}, You must login again`;

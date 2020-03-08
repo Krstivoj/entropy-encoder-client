@@ -1,4 +1,4 @@
 {
-  "API_HOST": "",
-  "SOCKET_HOST": ""
+  "API_HOST": "http://165.22.85.15:8080/encoder_app/",
+  "SOCKET_HOST": "http://165.22.85.15:8080/encoder_app/"
 }

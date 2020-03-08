@@ -13,7 +13,7 @@ instance.defaults.headers.post['Content-Type'] = "application/json";
 instance.defaults.adapter = require('axios/lib/adapters/http');
 
 instance.interceptors.request.use((config) => {
-    if( config.url === "/api/auth/signup" || config.url === "/api/auth/signin" ){
+    if( config.url === "/api/auth/sign-up" || config.url === "/api/auth/sign-in" ){
         return config;
     }
     else {

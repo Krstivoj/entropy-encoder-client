@@ -15,8 +15,8 @@ import CodeTable                  from '../CodeTable/CodeTable';
 import TabPanel                   from '../TabPanel/TabPanel';
 import DecoderForm                from '../DecoderForm/DecoderForm';
 import {decode}                   from '../../services/DecodingService';
+import DecoderResponse            from '../DecoderResponse/DecoderResponse';
 import styles                     from './HomePage.style';
-import DecoderResponse from "../DecoderResponse/DecoderResponse";
 
 
 export default function HomePage() {
