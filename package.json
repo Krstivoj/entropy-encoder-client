@@ -24,6 +24,7 @@
     "react-router-dom": "latest",
     "react-scripts": "latest",
     "redux": "latest",
+    "serve": "^11.3.0",
     "socket.io": "latest",
     "sockjs-client": "latest",
     "stompjs": "latest",
